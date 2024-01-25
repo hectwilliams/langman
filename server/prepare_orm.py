@@ -4,7 +4,6 @@ import click
 from .langman_orm import Base, Usage, Game, User
 from .util import get_config
 from flask import Flask 
-from flask_restx import Resource, Api 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import inspect
@@ -21,7 +20,8 @@ app = Flask(__name__)
 def init_db():
     
     config = get_config( os.environ['FLASK_ENV'], open('server/config.yaml'))
-    
+    print(app.config)
+
     # create games database
     db = create_engine(config['DB_GAMES'])
     inspector = inspect(db)
@@ -36,7 +36,7 @@ def init_db():
     # Base.metadata.create_all(db)  # base creates tables using all derived classes in langman_orm.py
 
     # create usages database 
-    db = create_engine(config['DB_USAGES'])
+    db = create_engine(config['DB_USAGE'])
     #drop table if table(s) exist(s)
     if inspector.get_table_names():
         Usage.__table__.drop(db)

@@ -1,8 +1,8 @@
 dev_lite:
-  DB_USAGES: sqlite:///server/usages.db
+  DB_USAGE: sqlite:///server/usages.db
   DB_GAMES: sqlite:///server/langman.db 
 
 dev_postgres:
-  DB_USAGES: sqlite:///server/usages.db
+  DB_USAGE: sqlite:///server/usages.db
   DB_GAMES: postgresql://localhost:5432/langman
   
