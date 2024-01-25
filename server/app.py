@@ -12,6 +12,7 @@ from .langman_orm import Usage, User, Game
 import datetime
 import random 
 import uuid
+from unidecode import unidecode 
 
 # namespace 
 games_api = Namespace('games', description='Creating and playing games')
@@ -19,8 +20,7 @@ games_api = Namespace('games', description='Creating and playing games')
 # create/configure app 
 app = Flask(__name__)
 config = get_config( os.environ['FLASK_ENV'], open('server/config.yaml'))
-app.config.update( config ) 
-
+app.config.update( config )  # add flash environ variables and yaml field key values 
 CORS(app) # cross origin resource sharing 
 
 # create Restplus api on app
@@ -31,17 +31,17 @@ api.add_namespace(games_api, path='/api/games') # insert games namespace , clien
 @app.before_request
 def init_db():
     '''
-        Initialize db by creating the global db_session
+        Initialize db by creating the global db sessions
         
         runs on each request; global flask variable g is a global session
     '''
 
     if not hasattr(g, 'usage_db'):
-        db_usage = create_engine(config['DB_USAGE'])
+        db_usage = create_engine(app.config['DB_USAGE'])
         g.usage_db = sessionmaker(db_usage)()
 
     if not hasattr(g, 'games_db'):
-        db_games = create_engine(config['DB_GAMES'])
+        db_games = create_engine(app.config['DB_GAMES'])
         g.games_db = sessionmaker(db_games)()
 
 @app.teardown_request
@@ -207,9 +207,9 @@ class OneGame(Resource):
 
         usage = g.usage_db.query(Usage).filter(Usage.usage_id == game.usage_id).one() 
 
-        # update reveal_word if a correct guess is found 
-        if letter in usage.secret_word.lower():
-            game.reveal_word = ''.join(l if l.lower() in game.guessed else '_' for l in usage.secret_word) #  reveal_word is updated upon a matched guess 
+        # update reveal_word if a correct guess is found  + handle diacritics 
+        if letter in unidecode(usage.secret_word.lower()):
+            game.reveal_word = ''.join([ l if unidecode(l.lower()) in game.guessed else '_' for l in usage.secret_word  ]) # Note: unidecode(å) = a  
         else:
             game.bad_guesses += 1
 
@@ -234,8 +234,26 @@ class OneGame(Resource):
 
     def delete(self, game_id):
         '''
-            End the game, delete the state/record
+            Delete record for game ``game_id``
+
+            :route: ``/<game_id>`` DELETE 
+
+            :returns:
+                An acknowledgment object:
+                    * ``message`` Either `One` or `Zero` records deleted 
+            
+            This method removed the game from its table 
         '''
-        return {'message': 'Game DELETE Under Construction'}
+
+        game = g.games_db.query(Game).filter(Game.game_id == game_id).one_or_none() 
+
+        if game is not None:
+            g.games_db.delete(game)
+            g.games_db.commit()
+            msg = 'One record delete'
+        else:
+            msg = 'No record deleted'
+        
+        return {'message': msg}
     
 
