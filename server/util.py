@@ -1,5 +1,6 @@
 import os
 import yaml 
+import datetime 
 
 def get_config(env, config_resource):
     '''
@@ -29,3 +30,16 @@ def get_config(env, config_resource):
 
     # Put the values into application config
     return config_dict 
+
+def date_to_ordinal(dt):
+    '''
+        Given Datetime or None value ``dt``, return either None or the
+        ordinal value for the DateTime. Used for preparing to serialize to JSON
+    '''
+
+    if dt is None:
+        return None 
+    elif isinstance(dt, datetime.datetime):
+        return dt.toordinal() # returns proleptic Gregorian ordinal of the date 
+    else:
+        return 'unknown'
