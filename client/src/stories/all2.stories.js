@@ -1,5 +1,5 @@
 import React from 'react';
-import {Banner, ResultBanner, UsageAndBanks} from '../components.js';
+import {Banner, ResultBanner, UsageAndBlanks} from '../components.js';
 import {action} from '@storybook/addon-actions';
 
 
@@ -35,9 +35,9 @@ export const resultBanner = () => (
     </div>
 );
 
-export const usageAndBanks = () => (
+export const usageAndBlanks = () => (
     <div>
-        <h2> UsageAndBanks(usage, blanks, showBlanks)</h2>
+        <h2> UsageAndBlanks(usage, blanks, showBlanks)</h2>
         <p> The component uses the non-React function prepareUsage</p>
         <ul>
             <li> usage - usage example with guess word as underscores</li>
@@ -45,14 +45,14 @@ export const usageAndBanks = () => (
             <li> showBlanks - whether to show blanks seperately or in usage</li>
         </ul>
         <h3> With blanks</h3>
-        <UsageAndBanks
+        <UsageAndBlanks
             usage= "The sky loomed dark and ______."
             blanks = "__oo_y"
             showBlanks = {true}
         />
 
         <h3> Without blanks</h3>
-        <UsageAndBanks
+        <UsageAndBlanks
             usage= "The sky loomed dark and ______."
             blanks = "gloomy"
             showBlanks = {false}

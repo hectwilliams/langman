@@ -14,8 +14,8 @@ const TitleFontDiv = styled.div`
 
 const SubTitleDiv = styled.div`
     font-family: 'Allura', cursive;
-    font-size: 2em;
-    text-align: left;
+    font-size: 0.8em;
+    text-align: right;
     margin-top: -2em;
     padding-right: 3em;
 `;
@@ -70,21 +70,16 @@ class ResultBanner extends Component {
 }
 
 function prepareUsage(usage, blanks, showBlanks) {
-    const [beforeBlanks, afterBlanks] = usage.split(/_+/)  
-    const newBlanks = (showBlanks ? blanks.replace(/./g, '_'): blanks);
-
+    const [beforeBlanks, afterBlanks] = usage.split(/_+/)  // ex. The sky loomed dark and ______.
+    const newBlanks = (showBlanks ? blanks.replace(/./g, '_'): blanks); // global, test amongst all possible  matches (i.e. every possible char)
     return (
         <p>
-            {beforeBlanks}
-            <InUsageSpan showBlanks={showBlanks}>
-                {newBlanks}
-            </InUsageSpan>
-            {afterBlanks}
+            {beforeBlanks} <InUsageSpan showBlanks={showBlanks}> {newBlanks} </InUsageSpan> {afterBlanks}
         </p>
     );
 }
 
-class UsageAndBanks extends Component {
+class UsageAndBlanks extends Component {
     render() {
         const {usage, blanks, showBlanks} = this.props;
         const newUsage = prepareUsage(usage, blanks, showBlanks);
@@ -101,4 +96,4 @@ class UsageAndBanks extends Component {
 }
 
 
-export {Banner, ResultBanner, UsageAndBanks}
+export {Banner, ResultBanner, UsageAndBlanks}

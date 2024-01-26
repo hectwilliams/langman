@@ -63,7 +63,7 @@ const FormSelectStyle = styled.select`
 `;
 
 const ActionButtonStyle = styled.button`
-    padding: 5px;
+    padding: 3px;
     margin: 3px;
     background-color: #ccc;
     font-size: 110%;
@@ -156,9 +156,9 @@ class StartForm extends Component {
                     <br/> 
                     <label htmlFor='languageInput'> Choose a Language </label>
                     <FormSelectStyle onChange={onLangChange} value={langValue} id="languageInput" name="language" >
-                        <option>English</option>
-                        <option>French</option>
-                        <option>Spanish</option>
+                        <option value="en">English</option>
+                        <option value="fr">French</option>
+                        <option value="es">Spanish</option>
                     </FormSelectStyle>
                     <br/>
                     <ActionButtonStyle type="button" onclick={clickWrapper}>
@@ -173,7 +173,7 @@ class StartForm extends Component {
 class PlayAgainPanel extends Component {
     constructor(props) {
         super(props);
-        this.state = {langValue: "en"};
+        this.state = {langValue: props.lang};
         this.onLangChange = this.onLangChange.bind(this);
         this.clickWrapper = this.clickWrapper.bind(this);
     }
@@ -196,11 +196,10 @@ class PlayAgainPanel extends Component {
                 <form>
                     <label htmlFor='languageInput'> Choose a Language </label>
                     <FormSelectStyle onChange={onLangChange} value={langValue} id="languageInput" name="language" >
-                        <option>English</option>
-                        <option>French</option>
-                        <option>Spanish</option>
+                        <option value="en" >English</option>
+                        <option value="fr" >French</option>
+                        <option value="es" >Spanish</option>
                     </FormSelectStyle>
-                    <br/>
                     <ActionButtonStyle type="button" onclick={clickWrapper}>
                         Play Again
                     </ActionButtonStyle>
