@@ -1,7 +1,8 @@
 import React from 'react';
 import {LetterButton, ButtonPanel, StartForm, PlayAgainPanel} from '../buttons.js';
-
+import {Banner, ResultBanner, UsageAndBanks} from '../components';
 import {action} from '@storybook/addon-actions';
+
 // import { addDecorator } from '@storybook/react';
 // import { GlobalStyle } from '../font.js';
 
@@ -77,6 +78,11 @@ export const playAgainPanel = () => (
             <li>  lang - new language  </li>
             <li>  clickQuit - callback to quit playing   </li>
         </ul>
+        <h3> English Selection</h3>
+        <PlayAgainPanel clickPlayAgain={action('play-again')} clickQuit={action('key')} />
+        <h3> French Selection</h3>
+        <PlayAgainPanel clickPlayAgain={action('play-again')} clickQuit={action('key')} />
+        <h3> Spanish Selection</h3>
         <PlayAgainPanel clickPlayAgain={action('play-again')} clickQuit={action('key')} />
     </div>
 
@@ -84,3 +90,4 @@ export const playAgainPanel = () => (
 playAgainPanel.args = {
     label: 'playAgainPanel',
 }
+
