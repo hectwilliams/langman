@@ -23,7 +23,7 @@ import styled from 'styled-components';
 //     }
 // `;
 
-const BaseLetterButton = styled.button`
+const BaseLetterButtonStyle = styled.button`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 30px;
     padding: 0em 0.9em 1.3em 0.3em;
@@ -38,7 +38,7 @@ const BaseLetterButton = styled.button`
     };
 `;
 
-const BoxPanel = styled.div`
+const BoxPanelStyle = styled.div`
     display: inline-block;
     font-size: 30px;
     background-color: #444;
@@ -48,28 +48,36 @@ const BoxPanel = styled.div`
     margin: 10px;
 `;
 
-const FormInput = styled.input`
+const FormInputStyle = styled.input`
     padding: 3px;
     margin: 6px;
     text-align: center;
     font-family: inherit;
 `;
 
-const FormSelect = styled.select`
+const FormSelectStyle = styled.select`
     padding: 3px;
     margin: 6px;
     text-align: center;
     font-family: inherit;
 `;
+
+const ActionButtonStyle = styled.button`
+    padding: 5px;
+    margin: 3px;
+    background-color: #ccc;
+    font-size: 110%;
+    font-family: inherit;
+`; 
 
 
 class LetterButton extends Component {
     render() {
         const {letter, wasUsed, makeGuess} = this.props;
         return (
-            < BaseLetterButton used={wasUsed} onClick={wasUsed? null : makeGuess} >
+            < BaseLetterButtonStyle used={wasUsed} onClick={wasUsed? null : makeGuess} >
                 {letter}
-            </ BaseLetterButton >
+            </ BaseLetterButtonStyle >
         );
     }
 }
@@ -85,44 +93,124 @@ const _alphabet = () => {
 }
 
 class ButtonPanel extends Component {
-    alphabet = _alphabet();
-
-    makeGuess(letter) {
-        return () => {
-            this.props.onGuess(letter);
-        }
-    }
+    alphabet = _alphabet(); // class property
+  
 
     constructor (props) {
         super(props);
         this.makeGuess = this.makeGuess.bind(this);
     }
 
+    makeGuess(letter) { // class method 
+        return () => {
+            this.props.onGuess(letter);
+        }
+    }
+
     render() {
-        const usedLetters = this.props.usedLetters.toUpperCase()
+        // local render variables 
+        const usedLetters = this.props.usedLetters.toUpperCase() // this.props properties are inputs to component call 
         const letterButtons = this.alphabet.map( (letter) => {
                 return  <LetterButton key={letter} letter={letter}  wasUsed={usedLetters.includes(letter)} makeGuess={this.makeGuess(letter)}  />;
             }
         );
         
         return(
-            <BoxPanel>
+            <BoxPanelStyle>
                 {letterButtons}
-            </BoxPanel>
+            </BoxPanelStyle>
         );
     }
 }
 
 class StartForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {nameValue: "", langValue: "en"};
+        this.onNameChange = this.onNameChange.bind(this);
+        this.onLangChange = this.onLangChange.bind(this);
+        this.clickWrapper = this.clickWrapper.bind(this);
+    }
+
+    onNameChange(event) {
+        this.setState({nameValue: event.target.value});
+    }
+
+    onLangChange(event) {
+        this.setState({langValue: event.target.value});
+    }
+
+    clickWrapper() {
+        const {nameValue, langValue} = this.state; // read nameValue and langValue from this.state object 
+        this.props.clickStart(nameValue, langValue);
+    }
+
     render() {
-        return <div>  Start Form </div>
+        const  {clickWrapper, onNameChange, onLangChange} = this;
+        const {nameValue, langValue} = this.state; 
+        return (
+            <div>
+                <form>
+                    <label htmlFor="nameInput"> Enter your name </label>
+                    <FormInputStyle value={nameValue} type="text" name="name" onChange={onNameChange}  /> 
+                    <br/> 
+                    <label htmlFor='languageInput'> Choose a Language </label>
+                    <FormSelectStyle onChange={onLangChange} value={langValue} id="languageInput" name="language" >
+                        <option>English</option>
+                        <option>French</option>
+                        <option>Spanish</option>
+                    </FormSelectStyle>
+                    <br/>
+                    <ActionButtonStyle type="button" onclick={clickWrapper}>
+                        Start a Game
+                    </ActionButtonStyle>
+                </form>
+            </div>
+        )
     }
 }
 
 class PlayAgainPanel extends Component {
-    render () {
-        return <div> Play Again Panel </div>
+    constructor(props) {
+        super(props);
+        this.state = {langValue: "en"};
+        this.onLangChange = this.onLangChange.bind(this);
+        this.clickWrapper = this.clickWrapper.bind(this);
     }
+    
+    onLangChange(event) {
+        this.setState({langValue: event.target.value});
+    }
+
+    clickWrapper() {
+        const {langValue} = this.state; // read nameValue and langValue from this.state object 
+        this.props.clickPlayAgain(langValue);
+    }
+
+    render () {
+        const {langValue} = this.state;
+        const {clickWrapper , onLangChange} = this;
+        const {clickQuit} = this.props; 
+        return (
+            <div>
+                <form>
+                    <label htmlFor='languageInput'> Choose a Language </label>
+                    <FormSelectStyle onChange={onLangChange} value={langValue} id="languageInput" name="language" >
+                        <option>English</option>
+                        <option>French</option>
+                        <option>Spanish</option>
+                    </FormSelectStyle>
+                    <br/>
+                    <ActionButtonStyle type="button" onclick={clickWrapper}>
+                        Play Again
+                    </ActionButtonStyle>
+                    <ActionButtonStyle type="button" onclick={clickQuit}>
+                        Quit
+                    </ActionButtonStyle>
+                </form>
+            </div>
+        )   
+     }
 }
 
 export {LetterButton, ButtonPanel, StartForm, PlayAgainPanel};

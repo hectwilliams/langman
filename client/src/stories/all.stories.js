@@ -60,18 +60,27 @@ export const startForm = () => (
     <div>
         <h2> StartForm</h2>
         <ul>
-            <li> </li>
+            <li> clickStart - gamestart callback -- requires name and language  </li>
         </ul>
-        <h3> </h3>
-        <StartForm/>
-
+        < StartForm clickStart ={action("key")} />
     </div>
 )
 startForm.args = {
     label: 'startForm',
 }
 
-export const playAgainPanel = () => <PlayAgainPanel/>;
+export const playAgainPanel = () => (
+    <div>
+        <h2> PlayAgainPanel</h2>
+        <ul>
+            <li>  clickPlayAgain - callback handle new language selection </li>
+            <li>  lang - new language  </li>
+            <li>  clickQuit - callback to quit playing   </li>
+        </ul>
+        <PlayAgainPanel clickPlayAgain={action('play-again')} clickQuit={action('key')} />
+    </div>
+
+)
 playAgainPanel.args = {
     label: 'playAgainPanel',
 }

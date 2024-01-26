@@ -145,3 +145,4 @@ class Game(Base):
         as_dict['start_time'] = date_to_ordinal(as_dict.get('start_time'))
         as_dict['end_time'] = date_to_ordinal(as_dict.get('end_time'))
         return as_dict  
+    
