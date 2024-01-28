@@ -161,7 +161,7 @@ class StartForm extends Component {
                         <option value="es">Spanish</option>
                     </FormSelectStyle>
                     <br/>
-                    <ActionButtonStyle type="button" onclick={clickWrapper}>
+                    <ActionButtonStyle type="button" onClick={clickWrapper}>
                         Start a Game
                     </ActionButtonStyle>
                 </form>

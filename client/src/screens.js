@@ -82,7 +82,7 @@ class SignInScreen extends Component {
         return (
             <FortySixtyGrid>
                 
-                <FullWidthDiv spacer>
+                <FullWidthDiv spacer ={"true"}>
                     <Banner full={true}/>
                 </FullWidthDiv>
                 

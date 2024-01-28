@@ -1,6 +1,5 @@
 import React from 'react';
 import {LetterButton, ButtonPanel, StartForm, PlayAgainPanel} from '../buttons.js';
-import {Banner, ResultBanner, UsageAndBanks} from '../components';
 import {action} from '@storybook/addon-actions';
 
 // import { addDecorator } from '@storybook/react';
