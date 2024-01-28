@@ -218,7 +218,7 @@ class OneGame(Resource):
         if outcome != 'active':
             user = g.games_db.query(User).filter(User.user_id == game.player).one() 
             game.end_time = datetime.datetime.now()
-            user.__game_ended(outcome, game.end_time - game.start_time)
+            user._game_ended(outcome, game.end_time - game.start_time)
         
         # return game state 
         game_dict = game._to_dict() 

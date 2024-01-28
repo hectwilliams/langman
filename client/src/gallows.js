@@ -1,4 +1,4 @@
-import React , {Component} from 'react';
+import React , {Component, createRef} from 'react';
 import styled from 'styled-components';
 
 const GallowCanvas = styled.canvas`
@@ -6,13 +6,14 @@ const GallowCanvas = styled.canvas`
 `;
 
 class Gallows extends Component {
+    canvasRef = createRef();
     componentDidMount() {  //called after first render cycle (i.e. component has been mounted)
         this.componentDidUpdate(); // invoked after component updates (prevProps,prevState ,  this.props, this.state may be read)
     }
     componentDidUpdate() {
 
         //  canvas ref via 2d context 
-        const ctx = this.refs.gallows.getContext("2d");
+        const ctx = this.canvasRef.current.getContext("2d");
         // render skeleton 
         ctx.fillRect(0, 290, 200, 10);   // base      Note:  x, y, width height --> top left corner being the origin - [0,0]
         ctx.fillRect(20, 0, 10, 300);  // vertical line 
@@ -69,7 +70,7 @@ class Gallows extends Component {
         return ( 
             <div>
                 {/* ref makes component directly accessible using this.refs  */}
-                <GallowCanvas ref='gallows' width={200} height={300 }/>  
+                <GallowCanvas ref={this.canvasRef} width={200} height={300 }/>  
             </div>
         );
     }
