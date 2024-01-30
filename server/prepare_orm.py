@@ -12,12 +12,23 @@ from sqlalchemy import inspect
 ## FLASK_APP : server.prepare_orm.py
 ## FLASK_ENV : dev_lite{ for lite } dev_postgres{ for postgres }
 
+class Base():
+    '''
+        Base class 
+    '''
+    type_annotation_map = {}
+
+
 # flask instance 
 app = Flask(__name__)
 
 # register the client command init-db 
 @app.cli.command('init-db')
 def init_db():
+
+    '''
+    TESTING 123 
+    '''
     
     config = get_config( os.environ['FLASK_ENV'], open('server/config.yaml'))
     print(app.config)
