@@ -4,14 +4,14 @@ import datetime
 
 def get_config(env, config_resource):
     '''
-        Load config options for the given environment 
-        * ``env`` - yaml key ( i.e. parent field -->  e.g.  dev_lite )
-        * ``config_resource`` - file object referencing config.yaml file 
+        Load config options for the given environment:
+            * ``env`` - yaml key ( i.e. parent field -->  e.g.  dev_lite )
+            * ``config_resource`` - file object referencing config.yaml file 
     '''
 
     # read yaml file
     config_dict = yaml.load(config_resource, Loader=yaml.Loader)
-    print(config_dict)
+    # print(config_dict)
     # parse yam file using key or parent field env
     try:
         config_dict = config_dict[env]

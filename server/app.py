@@ -5,22 +5,28 @@ from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func 
-
-from .util import get_config 
 from .langman_orm import Usage, User, Game
+from .util import get_config
 
 import datetime
-import random 
 import uuid
 from unidecode import unidecode 
+import random 
+
 
 # namespace 
 games_api = Namespace('games', description='Creating and playing games')
 
 # create/configure app 
 app = Flask(__name__)
-config = get_config( os.environ['FLASK_ENV'], open('server/config.yaml'))
-app.config.update( config )  # add flash environ variables and yaml field key values 
+
+# handler required for sphinx documentation generation 
+try:
+    config = get_config( os.environ['FLASK_ENV'] , open('server/config.yaml'))
+    app.config.update( config )  # add flash environ variables and yaml field key values 
+except LookupError as error :
+        print('error opening yaml file')
+
 CORS(app) # cross origin resource sharing 
 
 # create Restplus api on app
@@ -61,6 +67,7 @@ def close_db(exception):
         _ = g.pop('games_db')
 
 
+# GAME API
 # /games ( /api/games )
 @games_api.route('')
 class Games(Resource):
@@ -69,7 +76,7 @@ class Games(Resource):
         '''
             Start a new game and return the game id
 
-            :route: ``/`` GET 
+            :route: ``/`` POST 
 
             :payload:
                 * ``username`` A string containing the player's name
@@ -118,6 +125,8 @@ class Games(Resource):
         g.games_db.commit()
         return {'message': 'success', 'game_id': new_game_id}
     
+
+
 # /games/1 ( /api/games/1 )
 @games_api.route('/<game_id>')
 class OneGame(Resource):

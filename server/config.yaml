@@ -5,4 +5,3 @@ dev_lite:
 dev_postgres:
   DB_USAGE: sqlite:///server/usages.db
   DB_GAMES: postgresql://localhost:5432/langman
-  
