@@ -1,22 +1,24 @@
-from sqlalchemy import create_engine, Column, types, MetaData 
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import  Column, types 
 from sqlalchemy.orm import DeclarativeBase
 import datetime
 import json 
 from .util import date_to_ordinal
 
-class Base(DeclarativeBase):
+class _Base(DeclarativeBase):
+    '''
+        Base class 
+    '''
     type_annotation_map = {}
 
-class Usage(Base):
+class Usage(_Base):
     '''
         Table ``usages`` with fields: 
-        * ``usage_id``- UUID primary key string of length 38
-        * ``language``- Two-letter language code (en, es, fr)
-        * ``lang_id``- language index of the language
-        * ``secret_word``- Word to be guesses (length <= 25)
-        * ``usage``- Usage sentence, length <= 400, with word blanked 
-        * ``source``- Text from which the usage sentence is drawn
+            * ``usage_id``- UUID primary key string of length 38
+            * ``language``- Two-letter language code (en, es, fr)
+            * ``lang_id``- language index of the language
+            * ``secret_word``- Word to be guesses (length <= 25)
+            * ``usage``- Usage sentence, length <= 400, with word blanked 
+            * ``source``- Text from which the usage sentence is drawn
     '''
 
     __tablename__ = 'usages'
@@ -27,17 +29,17 @@ class Usage(Base):
     usage = Column(types.String(length=500), nullable=False)
     source = Column(types.String(length=100))
 
-class User(Base):
+class User(_Base):
     '''
-        Table ``users`` with fields
-        * ``user_id`` - UUID primary key of length 38
-        * ``user_name`` - String of maximum length 30
-        * ``num_games`` - Integer count of games started
-        * ``outcomes`` - JSON string storing game counts (win, losses, cancels) by outcome 
-        * ``by_lang`` - JSON string storing game counts by game language
-        * ``first_time`` - DateTime indicating when first game was played
-        * ``total_time`` - TimeDelta of total time with active games
-        * ``avg_time`` - TimeDelta of the average game length
+        Table ``users`` with fields:
+            * ``user_id`` - UUID primary key of length 38
+            * ``user_name`` - String of maximum length 30
+            * ``num_games`` - Integer count of games started
+            * ``outcomes`` - JSON string storing game counts (win, losses, cancels) by outcome 
+            * ``by_lang`` - JSON string storing game counts by game language
+            * ``first_time`` - DateTime indicating when first game was played
+            * ``total_time`` - TimeDelta of total time with active games
+            * ``avg_time`` - TimeDelta of the average game length
     '''
 
     __tablename__ = 'users'
@@ -102,17 +104,17 @@ class User(Base):
         self.total_time = time_delta + (self.total_time or datetime.timedelta(0))
         self.avg_time = self.total_time / self.num_games
 
-class Game(Base):
+class Game(_Base):
     '''
-        Table ``games`` with fields
-        * ``game_id`` - UUID primary key of length 38
-        * ``player`` - Player key from ``users`` table, length 38
-        * ``usage_id`` - Integer index usage in ``usages`` table
-        * ``guessed`` - A string of the letters guessed so far 
-        * ``reveal_word`` - Secret word with guessed letters filled in
-        * ``bad_guesses`` - Number of bad guesses so far as an integer
-        * ``start_time`` - DateTime when game started
-        * ``end_time`` - DateTime when game ended
+        Table ``games`` with fields:
+            * ``game_id`` - UUID primary key of length 38
+            * ``player`` - Player key from ``users`` table, length 38
+            * ``usage_id`` - Integer index usage in ``usages`` table
+            * ``guessed`` - A string of the letters guessed so far 
+            * ``reveal_word`` - Secret word with guessed letters filled in
+            * ``bad_guesses`` - Number of bad guesses so far as an integer
+            * ``start_time`` - DateTime when game started
+            * ``end_time`` - DateTime when game ended
     '''
 
     __tablename__ = 'games'
