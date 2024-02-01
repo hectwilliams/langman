@@ -40,6 +40,20 @@ class User(_Base):
             * ``first_time`` - DateTime indicating when first game was played
             * ``total_time`` - TimeDelta of total time with active games
             * ``avg_time`` - TimeDelta of the average game length
+    
+        Required consistency:
+            *   After adding a letter to a game, two outputs are possible
+                *   win/lose, changing the num_games property
+                *   continued play, no change to num_games property
+
+            *  total languages (User.by_lang) and number of outcomes (User.outcomes) should equal the User.num_games 
+
+            * User.avg_time must always equal User.total_time/User.games 
+
+            * User.guessed is either the same (i.e. start= "ab" end="ab") or  a string with the letter guess appended (i.e. start = ab end = abh)
+
+
+
     '''
 
     __tablename__ = 'users'
@@ -115,6 +129,11 @@ class Game(_Base):
             * ``bad_guesses`` - Number of bad guesses so far as an integer
             * ``start_time`` - DateTime when game started
             * ``end_time`` - DateTime when game ended
+
+        Required consistency:
+            * player and usage_id never changes 
+            * reveal word letters are from guessed string
+            * badguess is the count of letters in guessed, not found in reveal_word
     '''
 
     __tablename__ = 'games'
@@ -137,13 +156,40 @@ class Game(_Base):
         else:
             return 'active' 
     
-    def _to_dict(self):
+    def _to_dict(self, oldict = None):
         '''
             Convert the game into a dictionary suitable for JSON serialization 
         '''
 
-        as_dict = {k:v for k,v in self.__dict__.items() if not k.startswith('_')}
+        as_dict = {k:v for k,v in self.__dict__.items() if not k.startswith('_')}  # dict_items([('exampleKey', 'exampleValue')])
+        
+        if oldict != None and not self._check_consistent(as_dict, oldict) :
+            return None
+
         as_dict['result'] = self._result() 
         as_dict['start_time'] = date_to_ordinal(as_dict.get('start_time'))
         as_dict['end_time'] = date_to_ordinal(as_dict.get('end_time'))
+
         return as_dict  
+    
+    def _check_consistent(self, newdict, olddict):
+        output = True
+
+        if (olddict['player'] != newdict['player']   ):
+            output = False
+            assert False, 'Game.player'
+        
+        if (olddict['usage_id'] != newdict['usage_id'] ):
+            output = False
+            assert False, 'Game.usage_id'
+
+        # prev_guess_summary = ''.join( [c if c in olddict['reveal_word']   else  '*'  for c in olddict['guessed']   ] )  #invalid chars in 'guessed' property string are replaced with *
+        # curr_guess_summary = ''.join( [c if c in newdict['reveal_word']   else  '*'  for c in newdict['guessed']   ] ) 
+        
+        # if not (prev_guess_summary== olddict['guessed']   and curr_guess_summary == newdict['guessed']  ) :
+        #     output = False 
+
+        # if not (prev_guess_summary.count('*') == olddict['bad_guesses']  and  curr_guess_summary.count('*') == newdict['bad_guesses']):
+        #     output = False 
+        
+        return output 

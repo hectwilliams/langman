@@ -1,17 +1,19 @@
 import os
-from flask import Flask , g
+from flask import Flask , g, Response
 from flask_restx import  Resource, Api, Namespace
 from flask_cors import CORS 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import func 
 from .langman_orm import Usage, User, Game
-from .util import get_config
+from .util import get_config, init_usage_table
+from .prepare_orm import init_db_task
 
 import datetime
 import uuid
 from unidecode import unidecode 
 import random 
+import os 
 
 
 # namespace 
@@ -22,8 +24,14 @@ app = Flask(__name__)
 
 # handler required for sphinx documentation generation 
 try:
-    config = get_config( os.environ['FLASK_ENV'] , open('server/config.yaml'))
-    app.config.update( config )  # add flash environ variables and yaml field key values 
+    resource = open('server/config.yaml')
+    config = get_config( os.environ['FLASK_ENV'] , resource )
+
+    if init_usage_table() : # initialize database ? 
+        init_db_task(config)
+    
+    app.config.update( config ) # add flash environ variables and yaml field key values 
+
 except LookupError as error :
         print('error opening yaml file')
 
@@ -71,7 +79,7 @@ def close_db(exception):
 # /games ( /api/games )
 @games_api.route('')
 class Games(Resource):
-    valid_langs = ('en', 'es', 'fr')
+    valid_langs = ['en', 'es', 'fr']
     def post(self):
         '''
             Start a new game and return the game id
@@ -87,6 +95,7 @@ class Games(Resource):
                     * ``message`` Literal `success`
                     * ``game_id`` The new game's UUID
         '''
+
         # validate input (i.e payload)
         if not (games_api.payload and 'username' in games_api.payload and 'language' in games_api.payload):
             games_api.abort(400, 'new Game POST requires username and language ') # bad request
@@ -95,10 +104,11 @@ class Games(Resource):
         name = games_api.payload['username']
         user_id = str(uuid.uuid3(uuid.NAMESPACE_URL, name)) #uuid3 hashes a string in deterministically
 
-        # handle incorrect selected language 
-        if lang not in self.valid_langs:
-            return {'message': 'New game POST language must be from ' + ', '.join(Games.valid_langs) }
-        
+        print(lang, name)
+        if len(name.strip()) == 0 or lang not in self.valid_langs:
+            games_api.abort(400, 'invalid username or language not supported') # bad request
+
+
         # create/get user record (if it exists) **
         user = g.games_db.query(User).filter(User.user_id == user_id).one_or_none() 
 
@@ -199,11 +209,13 @@ class OneGame(Resource):
 
         # error handle user input/requests 
         if game is None:
-            games_api.abort(404, 'Game with id {} does not exist'.format(game_id)) # page/file does not exist 
+            games_api.abort(404, 'Game with id {} does not exist'.format(game_id)) # page/file(i.e. Game) does not exist 
         
         if game._result() != 'active':
             games_api.abort(403, 'Game with id {} is over'.format(game_id) ) # requesting on nonactive game, session is forbidden 
         
+        old_dict = game._to_dict()  # current game record
+
         if ('letter' not in games_api.payload or not games_api.payload['letter'].isalpha() or len(games_api.payload['letter']) != 1 ):
             games_api.abort(400, 'PUT requires one alphabetic character in letter field') # bad request 
          
@@ -222,18 +234,23 @@ class OneGame(Resource):
         else:
             game.bad_guesses += 1
 
-        # handle gameover, update user record 
+        # handle if game is over, update user record 
         outcome = game._result()
         if outcome != 'active':
             user = g.games_db.query(User).filter(User.user_id == game.player).one() 
             game.end_time = datetime.datetime.now()
-            user.__game_ended(outcome, game.end_time - game.start_time)
+            user._game_ended(outcome, game.end_time - game.start_time)
         
         # return game state 
-        game_dict = game._to_dict() 
+        game_dict = game._to_dict(old_dict) # consistency check (TBD)
+        if game_dict == None:
+            games_api.abort(409, "request malforms resource")
+        
         game_dict['usage'] = usage.usage.format(word='_'*len(usage.secret_word))    
         game_dict['lang'] = usage.language 
         game_dict['source'] = usage.source
+
+        # win or loss store secret word 
         if outcome != 'active':
             game_dict['secret_word'] = usage.secret_word
         
