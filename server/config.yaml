@@ -1,7 +1,8 @@
+config:
+  PREVIOUS_DB_INIT: '20240301144900'
 dev_lite:
+  DB_GAMES: sqlite:///server/langman.db
   DB_USAGE: sqlite:///server/usages.db
-  DB_GAMES: sqlite:///server/langman.db 
-
 dev_postgres:
-  DB_USAGE: sqlite:///server/usages.db
   DB_GAMES: postgresql://localhost:5432/langman
+  DB_USAGE: sqlite:///server/usages.db

@@ -1,0 +1,6 @@
+APP: server/app
+DB_GAMES: sqlite:///server/langman.db
+DB_USAGE: sqlite:///server/usages.db
+ENV: dev_lite
+PREVIOUS_DB_INIT: '20240131121805'
+RUN_FROM_CLI: 'true'
