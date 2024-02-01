@@ -21,7 +21,6 @@ games_api = Namespace('games', description='Creating and playing games')
 
 # create/configure app 
 app = Flask(__name__)
-
 # handler required for sphinx documentation generation 
 try:
     resource = open('server/config.yaml')
@@ -104,7 +103,6 @@ class Games(Resource):
         name = games_api.payload['username']
         user_id = str(uuid.uuid3(uuid.NAMESPACE_URL, name)) #uuid3 hashes a string in deterministically
 
-        print(lang, name)
         if len(name.strip()) == 0 or lang not in self.valid_langs:
             games_api.abort(400, 'invalid username or language not supported') # bad request
 
