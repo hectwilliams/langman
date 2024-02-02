@@ -150,8 +150,9 @@ class Game(_Base):
         '''
             Return the result of the game: lost, won, or active 
         '''
-        
-        if self.bad_guesses == 6:
+        if '_' not in self.reveal_word :
+            return 'won'
+        elif self.bad_guesses == 6:
             return 'lost'
         else:
             return 'active' 

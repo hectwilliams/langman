@@ -1,15 +1,13 @@
 import uuid 
 
 from flask import g 
-from flask_restx import Resource, Namespace 
+from flask_restx import Resource, Namespace, Api
 import flask_jwt_extended as JWT 
 import sqlalchemy
 from sqlalchemy.orm import exc
-
 from .auth_orm import Auth 
 
 auth_api = Namespace('auth', description='Authentication')
-
 
 @auth_api.route('')
 class Authenticate(Resource):
@@ -44,7 +42,6 @@ class Authenticate(Resource):
         
         # 3 create and return the access toek for the user 
         access_token = JWT.create_access_token(identity=user_id, additional_claims={'access': 'player', 'name': auth_api.payload['username'] })
-        print(access_token)
         return {'access_token': access_token }
         
     def put (self):
@@ -104,5 +101,5 @@ class Authenticate(Resource):
         if user_auth is not None:
             g.auth_db.delete(user_auth)
             g.auth_db.commit() 
-            
+
         return {'deleted_user_id': user_id }
