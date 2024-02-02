@@ -1,6 +1,7 @@
 import os
 import csv
 import click 
+from .auth_orm import Auth
 from .langman_orm import  Usage, Game, User
 from .util import get_config
 from flask import Flask 
@@ -34,20 +35,31 @@ def init_db():
 
 def init_db_task(config):
 
-    # create games database
+    # create games table
     db = create_engine(config['DB_GAMES'])
     inspector = inspect(db)
     #drop table if table(s) exist(s)
-    if inspector.get_table_names():
+    curr_tables = inspector.get_table_names()
+    if 'games' in curr_tables:
         Game.__table__.drop(db)
+    if 'usages' in curr_tables:
+        Usage.__table__.drop(db)
+    if 'users' in curr_tables:
         User.__table__.drop(db)
     # #create table(s)
     Game.__table__.create(db)
     User.__table__.create(db)
 
+    # create auth table 
+    db = create_engine(config['DB_AUTH'])
+    inspector = inspect(db)
+    if 'auth' in inspector.get_table_names():
+        Auth.__table__.drop(db)
+    Auth.__table__.create(db)
+    
     # Base.metadata.create_all(db)  # base creates tables using all derived classes in langman_orm.py
 
-    # create usages database 
+    # create usage table 
     db = create_engine(config['DB_USAGE'])
     #drop table if table(s) exist(s)
     if inspector.get_table_names():

@@ -111,3 +111,6 @@ def test_multiple_games(test_app):
     for i in range(1000):
         test_full_random_game(test_app)
 
+
+def test_auth(test_app):
+    pass
