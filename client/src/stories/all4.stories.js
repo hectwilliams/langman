@@ -1,4 +1,4 @@
-import { SignInScreen, WinScreen, LoseScreen, PlayScreen } from "../screens";
+import { SignInScreen, WinScreen, LoseScreen, PlayScreen, FooterScreen } from "../screens";
 import {action} from '@storybook/addon-actions';
 
 export default {
@@ -68,5 +68,13 @@ export const playscreen = () => (
         <h3>  Typical Game</h3>
         <PlayScreen usage = {"unhappy ______ is unhappy"} blanks={"_a____"} usedLetters="acr" numBadGuesses={2} onGuess={action('guess')} />
 
+    </div>
+);
+
+export const footscreen = () => (
+    <div>
+        <h2> footer for langman</h2>
+        <br/>
+        <FooterScreen/>
     </div>
 );

@@ -4,6 +4,7 @@ import styled, {keyframes} from 'styled-components';
 import { ButtonPanel, StartForm, PlayAgainPanel } from './buttons';
 import {Banner, ResultBanner, UsageAndBlanks, FlashMessage} from  './components';
 import { Gallows } from './gallows';
+import { ColumnPanel, IconPanel, CopyrightPanel } from './footer';
 
 const FortySixtyGrid = styled.div`
     display: grid;
@@ -116,9 +117,7 @@ class WinScreen extends Component {
                 </WinResultsDiv>
 
                 <PositionDivCentered row={3} column={" 1 /3 "}/>
-
                     <PlayAgainPanel lang={lang} clickPlayAgain={clickPlayAgain} clickQuit={clickQuit} /> 
-                
                 <PositionDivCentered/>
             </FortySixtyGrid>
         )
@@ -183,4 +182,20 @@ class PlayScreen extends Component {
     }
 }
 
-export {SignInScreen, WinScreen, LoseScreen, PlayScreen}
+class FooterScreen extends Component {
+    render() {
+        return(
+            <div>
+                <hr/>
+                <ColumnPanel/>
+                <hr/>
+                <IconPanel/>
+                <hr/>
+                <CopyrightPanel/>
+
+            </div>
+        )
+    }
+}
+
+export {SignInScreen, WinScreen, LoseScreen, PlayScreen, FooterScreen}
