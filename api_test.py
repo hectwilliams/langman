@@ -114,3 +114,5 @@ def test_multiple_games(test_app):
 
 def test_auth(test_app):
     pass
+
+# s3cr3t

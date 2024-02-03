@@ -23,7 +23,6 @@ class Games(Resource):
             :route: ``/`` POST 
 
             :payload:
-                * ``username`` A string containing the player's name
                 * ``language`` Language to play in (e.g. 'en')
 
             :returns:
@@ -38,8 +37,10 @@ class Games(Resource):
         
         lang = games_api.payload['language']
         
+        claims = JWT.get_jwt()
+
         # user's name from token
-        name = JWT.get_jwt()['name']  
+        name = claims['name']  
         # user's id from token 
         user_id = JWT.get_jwt_identity()
 
@@ -152,6 +153,7 @@ class OneGame(Resource):
                     * ``result`` Game outcome from enum ('lost', 'won', 'active')
         '''
 
+        print(games_api.payload)
         game = g.games_db.query(Game).filter(Game.game_id == game_id).one_or_none()
 
         if game is None:

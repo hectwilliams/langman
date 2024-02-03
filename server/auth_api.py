@@ -6,6 +6,7 @@ import flask_jwt_extended as JWT
 import sqlalchemy
 from sqlalchemy.orm import exc
 from .auth_orm import Auth 
+import datetime
 
 auth_api = Namespace('auth', description='Authentication')
 
@@ -40,8 +41,8 @@ class Authenticate(Resource):
         except exc.sa_exc.IntegrityError:
             auth_api.abort(400, 'Username is already registered')
         
-        # 3 create and return the access toek for the user 
-        access_token = JWT.create_access_token(identity=user_id, additional_claims={'access': 'player', 'name': auth_api.payload['username'] })
+        # 3 create and return the access toek for the user  expires_delta=datetime.timedelta(minutes=60)
+        access_token = JWT.create_access_token(identity=user_id,additional_claims={'access': 'player', 'name': auth_api.payload['username'] })
         return {'access_token': access_token }
         
     def put (self):

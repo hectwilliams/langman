@@ -1,28 +1,6 @@
 import React, {Component} from 'react'; 
 import styled from 'styled-components';
 
-// const BaseLetterButton = styled.button`
-//     font-size: 36px;
-//     padding: 2px;
-//     margin: auto;
-//     border-radius: 13px;
-//     width: 1em;
-//     background-color: #eee;
-// `;
-
-// const UsedLetterButton = styled(BaseLetterButton)`
-//     background-color: #777;
-//     margin: 2px
-// `;
-
-// const UnusedLetterButton = styled(BaseLetterButton)`
-//     background-color: #ccc;
-//     margin: 2px;
-//     &:hover {
-//         background-color: #eee;
-//     }
-// `;
-
 const BaseLetterButtonStyle = styled.button`
     font-family: 'IBM Plex Mono', monospace;
     font-size: 30px;
@@ -93,8 +71,7 @@ const _alphabet = () => {
 }
 
 class ButtonPanel extends Component {
-    alphabet = _alphabet(); // class property
-  
+    alphabet = _alphabet(); 
 
     constructor (props) {
         super(props);
@@ -126,10 +103,12 @@ class ButtonPanel extends Component {
 class StartForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {nameValue: "", langValue: "en"};
+        this.state = { nameValue: "", langValue: "en", registerNewAccount: false, passwordValue: "" };
         this.onNameChange = this.onNameChange.bind(this);
         this.onLangChange = this.onLangChange.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
         this.clickWrapper = this.clickWrapper.bind(this);
+        this.onNewAccountChange = this.onNewAccountChange.bind(this);
     }
 
     onNameChange(event) {
@@ -140,20 +119,34 @@ class StartForm extends Component {
         this.setState({langValue: event.target.value});
     }
 
+    onPasswordChange(event) {
+        this.setState({passwordValue: event.target.value})
+    }
+
+    onNewAccountChange(event) {
+        this.setState({registerNewAccount: event.target.checked})
+    }
+
     clickWrapper() {
-        const {nameValue, langValue} = this.state; // read nameValue and langValue from this.state object 
-        this.props.clickStart(nameValue, langValue);
+        const {nameValue, langValue, passwordValue, registerNewAccount} = this.state; // read nameValue and langValue from this.state object 
+        this.props.clickStart(nameValue, passwordValue, registerNewAccount, langValue);
     }
 
     render() {
-        const  {clickWrapper, onNameChange, onLangChange} = this;
-        const {nameValue, langValue} = this.state; 
+        const  {clickWrapper, onNameChange, onLangChange, onPasswordChange, onNewAccountChange} = this;
+        const {nameValue, passwordValue, registerNewAccount,langValue} = this.state; 
         return (
             <div>
                 <form>
                     <label htmlFor="nameInput"> Enter your name </label>
                     <FormInputStyle value={nameValue} type="text" name="name" onChange={onNameChange}  /> 
                     <br/> 
+                    <label htmlfor="password"> Password</label>
+                    <FormInputStyle value = {passwordValue} type={"password"} name={"password"} onChange={onPasswordChange} /> 
+                    <br/> 
+                    Register new account?&nbsp;
+                    <FormInputStyle checked={registerNewAccount} type={"checkbox"} onChange={onNewAccountChange} />
+                    <br/>
                     <label htmlFor='languageInput'> Choose a Language </label>
                     <FormSelectStyle onChange={onLangChange} value={langValue} id="languageInput" name="language" >
                         <option value="en">English</option>
@@ -200,10 +193,10 @@ class PlayAgainPanel extends Component {
                         <option value="fr" >French</option>
                         <option value="es" >Spanish</option>
                     </FormSelectStyle>
-                    <ActionButtonStyle type="button" onclick={clickWrapper}>
+                    <ActionButtonStyle type="button" onClick={clickWrapper}>
                         Play Again
                     </ActionButtonStyle>
-                    <ActionButtonStyle type="button" onclick={clickQuit}>
+                    <ActionButtonStyle type="button" onClick={clickQuit}>
                         Quit
                     </ActionButtonStyle>
                 </form>
@@ -213,3 +206,4 @@ class PlayAgainPanel extends Component {
 }
 
 export {LetterButton, ButtonPanel, StartForm, PlayAgainPanel};
+

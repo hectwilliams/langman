@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled, {keyframes} from 'styled-components';
 
 import { ButtonPanel, StartForm, PlayAgainPanel } from './buttons';
-import {Banner, ResultBanner, UsageAndBlanks} from  './components';
+import {Banner, ResultBanner, UsageAndBlanks, FlashMessage} from  './components';
 import { Gallows } from './gallows';
 
 const FortySixtyGrid = styled.div`
@@ -78,7 +78,7 @@ const LoseResultDiv = styled.div`
 
 class SignInScreen extends Component {
     render() {
-        const {clickStart} = this.props;
+        const {clickStart, flashMessage} = this.props;
         return (
             <FortySixtyGrid>
                 
@@ -91,7 +91,8 @@ class SignInScreen extends Component {
                 </PositionDivCentered>
 
                 <PositionDiv row={2} column={2}>
-                    <StartForm clickStart={clickStart}/>
+                    <FlashMessage flashMessage={flashMessage}/>
+                    <StartForm clickStart={clickStart} />
                 </PositionDiv>
 
             </FortySixtyGrid>
@@ -157,7 +158,7 @@ class LoseScreen extends Component {
 
 class PlayScreen extends Component {
     render() {
-        const {usage, blanks, usedLetters, numBadGuesses, onGuess} = this.props;
+        const {usage, blanks, usedLetters, numBadGuesses, onGuess, flashMessage} = this.props;
         return (
             <FortySixtyGrid>
                 <FullWidthDiv>
@@ -169,6 +170,7 @@ class PlayScreen extends Component {
                 </PositionDiv>
 
                 <PositionDiv row={2} column={2}>
+                    <FlashMessage flashMessage={flashMessage}/>
                     <UsageAndBlanks usage={usage} blanks={blanks} showBlanks={true} /> 
                 </PositionDiv>
 
