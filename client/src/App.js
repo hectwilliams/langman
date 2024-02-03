@@ -2,7 +2,7 @@
 
 import React, {Component} from 'react';
 import {GlobalStyle} from './font';
-import {SignInScreen, PlayScreen, WinScreen, LoseScreen} from './screens';
+import {SignInScreen, PlayScreen, WinScreen, LoseScreen, FooterScreen} from './screens';
 import axios from 'axios';
 
 export const APIURL = 'http://127.0.0.1:5000/'; //client at port 3000 (Front End),  server at 5000
@@ -136,6 +136,7 @@ class App extends Component {
       <> 
         <GlobalStyle/>
           {screen}
+        <FooterScreen/>
       </>
     ); 
   }
