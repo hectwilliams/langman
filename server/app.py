@@ -53,7 +53,9 @@ def init_db():
     if not hasattr(g, 'games_db'):
         
         print('PRINT APP CONFIG DICT')
+        print(type(app.config))
         print(app.config)
+
         print("DONE-===")
         db_games = create_engine(app.config['DB_GAMES'])
         g.games_db = sessionmaker(db_games)()
