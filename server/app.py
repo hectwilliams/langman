@@ -51,18 +51,13 @@ def init_db():
         g.usage_db = sessionmaker(db_usage)()
 
     if not hasattr(g, 'games_db'):
-        
-        print('PRINT APP CONFIG DICT')
-        print(type(app.config))
-        print(app.config)
-        print(app.config['DB_GAMES'])
-
-        print("DONE-===")
-        db_games = create_engine(app.config['DB_GAMES'])
+        db_path = app.config['DB_GAMES'].replace("postgres", "postgresql")
+        db_games = create_engine(db_path)
         g.games_db = sessionmaker(db_games)()
 
     if not hasattr(g, 'auth_db'):
-        db_auth = create_engine(app.config['DB_AUTH'])
+        db_path = app.config['DB_AUTH'].replace("postgres", "postgresql")
+        db_auth = create_engine(db_path)
         g.auth_db = sessionmaker(db_auth)()
  
 @app.teardown_request
