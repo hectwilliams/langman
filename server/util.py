@@ -54,6 +54,8 @@ def init_usage_table():
 
     with open('server/config.yaml', 'w+') as file:
 
+        print('DEBUG')
+        print(config_dict_yaml)
 
         old_yaml_update = config_dict_yaml['config']['PREVIOUS_DB_INIT'] 
 
