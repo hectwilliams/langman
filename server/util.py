@@ -13,6 +13,8 @@ def get_config(env, config_resource):
     
     # parse yaml file using key or parent field env
     try:
+        print('DEBUG')
+        print(config_dict_yaml)
         config_dict = config_dict_yaml[env]
     except KeyError:
         raise KeyError("Invalid ENV value '{}' should be in {}, set using FLASK_ENV=value".format(env, list(config_dict())))
