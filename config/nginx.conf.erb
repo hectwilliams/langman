@@ -15,10 +15,10 @@ http {
 
     log_format 12met 'measure#nginx.service=$request_time request_id=$http_x_request_id';
     access_log <%= ENV['NGINX_ACCESS_LOG_PATH'] || 'logs/nginx/access.log' %> 12met;
-    error_log <%= ENV['NGINX_ACCESS_ERROR_PATH'] || 'logs/nginx/error.log' %>;
+    error_log <%= ENV['NGINX_ERROR_LOG_PATH'] || 'logs/nginx/error.log' %>;
 
-    include mime.types
-    default_type application/octet-stream
+    include mime.types;
+    default_type application/octet-stream;
     sendfile on;
 
     # Must read body in 5 seconds
@@ -35,7 +35,7 @@ http {
 
         # serve the client (static files)
         location / {
-            root /app/client/build;
+            root  /app/client/build/;
             index index.html;
         }
 
@@ -47,7 +47,5 @@ http {
             proxy_pass http://app_server;
         }
     }
-
-
 
 }
