@@ -16,7 +16,7 @@ class Authenticate(Resource):
         '''
             Register a new user and log them in 
 
-            :route: ``/`` GET
+            :route: ``/`` POST
             :payload:
                 User's credentials
                     * ``username`` Player's name (a string)

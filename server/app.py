@@ -24,6 +24,7 @@ api.add_namespace(auth_api, path='/api/auth')
 jwt = JWT.JWTManager(app)
 
 application = app
+
 # handler required for sphinx documentation generation 
 try:
     resource = open('server/config.yaml')
@@ -50,6 +51,10 @@ def init_db():
         g.usage_db = sessionmaker(db_usage)()
 
     if not hasattr(g, 'games_db'):
+        
+        print('PRINT APP CONFIG DICT')
+        print(app.config['DB_GAMES'])
+        print("DONE-===")
         db_games = create_engine(app.config['DB_GAMES'])
         g.games_db = sessionmaker(db_games)()
 
