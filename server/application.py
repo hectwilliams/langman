@@ -23,7 +23,6 @@ api.add_namespace(auth_api, path='/api/auth')
 
 jwt = JWT.JWTManager(app)
 
-application = app
 # handler required for sphinx documentation generation 
 try:
     resource = open('server/config.yaml')
@@ -76,3 +75,4 @@ def close_db(exception):
     if hasattr(g, 'auth_db'):
         g.auth_db.close()
         _ = g.pop('auth_db')
+

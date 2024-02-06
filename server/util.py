@@ -67,6 +67,6 @@ def init_usage_table():
             config_dict_yaml['config']['PREVIOUS_DB_INIT'] = (datetime.datetime.now() + datetime.timedelta(days=30)) .strftime("%Y%m%d%H%M%S") 
             init_db_bool = True 
         
-        yaml.dump(config_dict_yaml, file)
+        yaml.dump(config_dict_yaml, file, default_flow_style=False)
 
     return init_db_bool  
