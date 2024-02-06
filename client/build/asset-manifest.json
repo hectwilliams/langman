@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.4efb37a3.css",
+    "main.js": "/static/js/main.e30a3527.js",
+    "static/js/27.725826cf.chunk.js": "/static/js/27.725826cf.chunk.js",
+    "static/media/goat.png": "/static/media/goat.4442a2fff23d706d7a99.png",
+    "static/media/superman.png": "/static/media/superman.a7f1f565698939746bb0.png",
+    "static/media/x.png": "/static/media/x.c0661554b1b79c39dc7d.png",
+    "static/media/meta.png": "/static/media/meta.103b7c75f89606e9ec9a.png",
+    "static/media/youtube.png": "/static/media/youtube.83c3be13f585a2ce28d1.png",
+    "static/media/tiktok.png": "/static/media/tiktok.48d18555d7e100d65a14.png",
+    "static/media/hang.png": "/static/media/hang.6be0ee48e3a71bc76a90.png",
+    "index.html": "/index.html"
+  },
+  "entrypoints": [
+    "static/css/main.4efb37a3.css",
+    "static/js/main.e30a3527.js"
+  ]
+}

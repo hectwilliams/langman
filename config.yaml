@@ -1,6 +1,14 @@
-APP: server/app
-DB_GAMES: sqlite:///server/langman.db
-DB_USAGE: sqlite:///server/usages.db
-ENV: dev_lite
-PREVIOUS_DB_INIT: '20240131121805'
-RUN_FROM_CLI: 'true'
+config:
+  PREVIOUS_DB_INIT: '20240131121805'
+dev_lite:
+  DB_GAMES: sqlite:///server/langman.db
+  DB_AUTH: sqlite:///server/langman.db
+  DB_USAGE: sqlite:///server/usages.db
+dev_postgres:
+  DB_GAMES: postgresql://localhost:5432/langman
+  DB_USAGE: sqlite:///server/usages.db
+  DB_AUTH: postgresql://localhost:5432/langman
+heroku:
+  DB_USAGE: sqlite:///server/usages.db
+  DB_GAMES: env:DATABASE_URL
+  DB_AUTH: env:DATABASE_URL
