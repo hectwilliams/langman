@@ -63,7 +63,7 @@ def init_db():
     if not hasattr(g, 'auth_db'):
         db_auth = create_engine(app.config['DB_AUTH'])
         g.auth_db = sessionmaker(db_auth)()
-
+ 
 @app.teardown_request
 def close_db(exception):
     '''
