@@ -3,7 +3,7 @@ Play hangman, guess to your heart's contents
 
 ## Deployment
 * Heroku
-* Game Access/Link TBD
+* Game Link: https://arcane-inlet-33160-0dbfc8068bba.herokuapp.com/
 
 ## Frameworks/Technologies 
 * React
