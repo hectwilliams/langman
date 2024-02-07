@@ -58,7 +58,7 @@ class User(_Base):
 
     __tablename__ = 'users'
     user_id = Column(types.String(length=38), primary_key=True)
-    user_name = Column(types.String(length=30), nullable=False)
+    user_name = Column(types.String(length=40), nullable=False)
     num_games = Column(types.Integer, default = 0)
     outcomes = Column(types.Text, default='{}')
     by_lang = Column(types.Text, default='{}')
@@ -138,7 +138,7 @@ class Game(_Base):
 
     __tablename__ = 'games'
     game_id = Column(types.String(length=38), primary_key=True)
-    player = Column(types.String(length=30), nullable=False)
+    player = Column(types.String(length=40), nullable=False)
     usage_id = Column(types.Integer, nullable=False)
     guessed = Column(types.String(length=30), default='')
     reveal_word = Column(types.String(length=25), nullable=False)

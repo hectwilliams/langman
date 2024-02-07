@@ -34,7 +34,7 @@ def init_db():
     init_db_task(config)
 
 def init_db_task(config):
-
+    print('HELLO WORLD')
     # create games table
     db = create_engine(config['DB_GAMES'])
     inspector = inspect(db)

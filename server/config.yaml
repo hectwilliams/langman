@@ -1,5 +1,5 @@
 config:
-  PREVIOUS_DB_INIT: '20240301144900'
+  PREVIOUS_DB_INIT: '20240307200146'
 dev_lite:
   DB_AUTH: sqlite:///server/langman.db
   DB_GAMES: sqlite:///server/langman.db
@@ -9,6 +9,6 @@ dev_postgres:
   DB_GAMES: postgresql://localhost:5432/langman
   DB_USAGE: sqlite:///server/usages.db
 heroku:
-  DB_USAGE: sqlite:///server/usages.db
-  DB_GAMES: env:DATABASE_URL
   DB_AUTH: env:DATABASE_URL
+  DB_GAMES: env:DATABASE_URL
+  DB_USAGE: sqlite:///server/usages.db
